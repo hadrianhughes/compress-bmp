@@ -73,9 +73,7 @@ int main() {
   unsigned int *paletteLen = &pl;
   Color *palette = get_unique(pixels, *width * *height, paletteLen);
 
-  for (int i = 0;i < *paletteLen;i++) {
-    printf("%u %u %u\n", palette[i].r, palette[i].g, palette[i].b);
-  }
+  printf("Palette: %u, Pixels: %u", *paletteLen, *width * *height);
 
   free(palette);
 
