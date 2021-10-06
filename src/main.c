@@ -41,11 +41,11 @@ int main() {
   unsigned int *height = &h;
   Color *pixels = load_pixels("example.bmp", width, height);
 
-  unsigned int ul;
-  unsigned int *uniqLen = &ul;
-  Color *unique = get_unique(pixels, *width * *height, uniqLen);
+  unsigned int pl;
+  unsigned int *paletteLen = &pl;
+  Color *palette = get_unique(pixels, *width * *height, paletteLen);
 
-  free(unique);
+  free(palette);
 
   return 0;
 }
