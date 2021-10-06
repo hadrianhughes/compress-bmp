@@ -41,10 +41,12 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  char *path = argv[1];
+
   unsigned int w, h;
   unsigned int *width = &w;
   unsigned int *height = &h;
-  Color *pixels = load_pixels("example.bmp", width, height);
+  Color *pixels = load_pixels(path, width, height);
   unsigned int pixelLen = *width * *height;
 
   unsigned int pl;
