@@ -40,12 +40,20 @@ int main() {
   unsigned int *width = &w;
   unsigned int *height = &h;
   Color *pixels = load_pixels("example.bmp", width, height);
+  unsigned int pixelLen = *width * *height;
 
   unsigned int pl;
   unsigned int *paletteLen = &pl;
-  Color *palette = get_unique(pixels, *width * *height, paletteLen);
+  Color *palette = get_unique(pixels, pixelLen, paletteLen);
+
+  int *indices = index_pixels(pixels, pixelLen, palette, *paletteLen);
+
+  for (int i = 0;i < pixelLen;i++) {
+    printf("%d\n", indices[i]);
+  }
 
   free(palette);
+  free(indices);
 
   return 0;
 }

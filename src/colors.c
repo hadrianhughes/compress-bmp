@@ -40,3 +40,23 @@ Color *get_unique(Color *pixels, unsigned int pxLen, unsigned int *len) {
 
   return unique;
 }
+
+int get_color_index(Color *palette, unsigned int paletteLen, Color c) {
+  for (int i = 0;i < paletteLen;i++) {
+    if (cequal(c, palette[i])) {
+      return i;
+    }
+  }
+
+  return 0;
+}
+
+int *index_pixels(Color *pixels, unsigned int pxLen, Color *palette, unsigned int paletteLen) {
+  int *indexedBmp = malloc(sizeof(int) * pxLen);
+
+  for (int p = 0;p < pxLen;p++) {
+    indexedBmp[p] = get_color_index(palette, paletteLen, pixels[p]);
+  }
+
+  return indexedBmp;
+}
