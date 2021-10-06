@@ -5,8 +5,8 @@ typedef struct Pixel {
   unsigned char r, g, b;
 } Pixel;
 
-int main() {
-  BMP *bmp = bopen("example.bmp");
+Pixel *load_pixels(char *path) {
+  BMP *bmp = bopen(path);
 
   unsigned int width = get_width(bmp);
   unsigned int height = get_height(bmp);
@@ -29,6 +29,13 @@ int main() {
   }
 
   bclose(bmp);
+
+  Pixel *p = pixels;
+  return p;
+}
+
+int main() {
+  Pixel *pixels = load_pixels("example.bmp");
 
   return 0;
 }
