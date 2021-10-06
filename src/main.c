@@ -35,47 +35,17 @@ Color *load_pixels(char *path, unsigned int *w, unsigned int* h) {
   return p;
 }
 
-Color *get_unique(Color *pixels, unsigned int pxLen, unsigned int *len) {
-  Color *unique = malloc(sizeof(Color));
-  unsigned int uniqLen = 0;
-
-  for (int i = 0;i < pxLen;i++) {
-    int duplicate = 0;
-    for (int j = 0;j < uniqLen;j++) {
-      if (cequal(pixels[i], unique[j])) {
-        duplicate = 1;
-        break;
-      }
-    }
-
-    if (!duplicate) {
-      if (uniqLen > 0) {
-        unique = realloc(unique, sizeof(Color) * (uniqLen + 1));
-      }
-
-      unique[uniqLen] = pixels[i];
-      uniqLen++;
-    }
-  }
-
-  *len = uniqLen;
-
-  return unique;
-}
-
 int main() {
   unsigned int w, h;
   unsigned int *width = &w;
   unsigned int *height = &h;
   Color *pixels = load_pixels("example.bmp", width, height);
 
-  unsigned int pl;
-  unsigned int *paletteLen = &pl;
-  Color *palette = get_unique(pixels, *width * *height, paletteLen);
+  unsigned int ul;
+  unsigned int *uniqLen = &ul;
+  Color *unique = get_unique(pixels, *width * *height, uniqLen);
 
-  printf("Palette: %u, Pixels: %u", *paletteLen, *width * *height);
-
-  free(palette);
+  free(unique);
 
   return 0;
 }
