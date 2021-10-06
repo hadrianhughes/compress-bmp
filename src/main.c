@@ -1,16 +1,16 @@
 #include <stdio.h>
 #include "../lib/cbmp.h"
 
-typedef struct Pixel {
+typedef struct Color {
   unsigned char r, g, b;
-} Pixel;
+} Color;
 
-Pixel *load_pixels(char *path) {
+Color *load_pixels(char *path) {
   BMP *bmp = bopen(path);
 
   unsigned int width = get_width(bmp);
   unsigned int height = get_height(bmp);
-  Pixel pixels[width * height];
+  Color pixels[width * height];
   unsigned int pxHead = 0;
 
   for (int x = 0;x < width;x++) {
@@ -18,7 +18,7 @@ Pixel *load_pixels(char *path) {
       unsigned char r, g, b;
       get_pixel_rgb(bmp, x, y, &r, &g, &b);
 
-      Pixel p;
+      Color p;
       p.r = r;
       p.g = g;
       p.b = b;
@@ -30,12 +30,12 @@ Pixel *load_pixels(char *path) {
 
   bclose(bmp);
 
-  Pixel *p = pixels;
+  Color *p = pixels;
   return p;
 }
 
 int main() {
-  Pixel *pixels = load_pixels("example.bmp");
+  Color *pixels = load_pixels("example.bmp");
 
   return 0;
 }
