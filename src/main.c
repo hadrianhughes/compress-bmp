@@ -35,7 +35,12 @@ Color *load_pixels(char *path, unsigned int *w, unsigned int* h) {
   return p;
 }
 
-int main() {
+int main(int argc, char **argv) {
+  if (argc < 2) {
+    printf("Usage: idxbmp <path>\n");
+    return 1;
+  }
+
   unsigned int w, h;
   unsigned int *width = &w;
   unsigned int *height = &h;
