@@ -1,9 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-typedef struct Color {
-  unsigned char r, g, b;
-} Color;
+#include "colors.h"
 
 int cequal(Color col1, Color col2) {
   if (col1.r == col2.r && col1.g == col2.g && col1.b == col2.b) {

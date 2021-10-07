@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../lib/cbmp.h"
-#include "./colors.c"
-#include "./utils.c"
+#include "files.h"
 
 Color *load_pixels(char *path, unsigned int *w, unsigned int* h) {
   BMP *bmp = bopen(path);
@@ -56,7 +55,7 @@ int main(int argc, char **argv) {
 
   int *indices = index_pixels(pixels, pixelLen, palette, *paletteLen);
 
-  /* write_indexed_file(indices, pixelLen, palette, *paletteLen, path); */
+  write_indexed_file(indices, pixelLen, palette, *paletteLen, path);
 
   free(palette);
   free(indices);

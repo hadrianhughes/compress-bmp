@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "utils.h"
 
 char *get_file_name(char *path) {
   char *name = malloc(sizeof(char));
