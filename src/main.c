@@ -55,7 +55,7 @@ int main(int argc, char **argv) {
 
   int *indices = index_pixels(pixels, pixelLen, palette, *paletteLen);
 
-  write_indexed_file(indices, pixelLen, palette, *paletteLen, path);
+  write_indexed_file(indices, *width, *height, palette, *paletteLen, path);
 
   free(palette);
   free(indices);
