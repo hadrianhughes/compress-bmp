@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "../lib/cbmp.h"
 #include "./colors.c"
 #include "./utils.c"
@@ -37,17 +36,6 @@ Color *load_pixels(char *path, unsigned int *w, unsigned int* h) {
   return p;
 }
 
-void write_indexed_file(Color *pixels, unsigned int pxLen, Color *palette, unsigned int paletteLen, char *filePath) {
-  char *inputFileName = get_file_name(filePath);
-  char *newFileName = strcat(inputFileName, ".idx");
-
-  FILE *fp = fopen(newFileName, "w");
-
-  fputs("Hello world!", fp);
-
-  fclose(fp);
-}
-
 int main(int argc, char **argv) {
   if (argc < 2) {
     printf("Usage: idxbmp <path>\n");
@@ -68,7 +56,7 @@ int main(int argc, char **argv) {
 
   int *indices = index_pixels(pixels, pixelLen, palette, *paletteLen);
 
-  write_indexed_file(pixels, pixelLen, palette, *paletteLen, path);
+  /* write_indexed_file(indices, pixelLen, palette, *paletteLen, path); */
 
   free(palette);
   free(indices);
