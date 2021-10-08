@@ -3,26 +3,23 @@
 #include <string.h>
 #include "../lib/cbmp.h"
 #include "files.h"
-#include "colors.h"
 
 void compress_routine(char *path) {
-  unsigned int *width = malloc(sizeof(unsigned int));
-  unsigned int *height = malloc(sizeof(unsigned int));
-  pixel *pixels = load_pixels(path, width, height);
-  unsigned int pixelLen = (*width) * (*height);
+  Compressed *c = (Compressed*) malloc(sizeof(Compressed));
 
-  unsigned int pl;
-  unsigned int *paletteLen = &pl;
-  pixel *palette = get_unique(pixels, pixelLen, paletteLen);
+  pixel *pixels = load_pixels(c, path);
+  unsigned int pixelLen = (c->width) * (c->height);
 
-  int *indices = index_pixels(pixels, pixelLen, palette, *paletteLen);
+  get_unique(c, pixels, pixelLen);
 
-  write_indexed_file(indices, *width, *height, palette, *paletteLen, path);
+  index_pixels(c, pixels, pixelLen);
 
-  free(width);
-  free(height);
-  free(palette);
-  free(indices);
+  write_indexed_file(c->indices, c->width, c->height, c->palette, c->paletteLen, path);
+
+  close_compressed(c);
+}
+
+void decompress_routine(char *path) {
 }
 
 int main(int argc, char **argv) {

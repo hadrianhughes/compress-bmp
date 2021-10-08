@@ -2,13 +2,19 @@
 #include <stdlib.h>
 #include "colors.h"
 
-pixel *load_pixels(char *path, unsigned int *w, unsigned int *h) {
+void close_compressed(Compressed *c) {
+  free(c->palette);
+  free(c->indices);
+  free(c);
+}
+
+pixel *load_pixels(Compressed *c, char *path) {
   BMP *bmp = bopen(path);
 
   unsigned int width = get_width(bmp);
   unsigned int height = get_height(bmp);
-  *w = width;
-  *h = height;
+  c->width = width;
+  c->height = height;
 
   pixel pixels[width * height];
   unsigned int pxHead = 0;
@@ -42,14 +48,14 @@ int cequal(pixel p1, pixel p2) {
   return 0;
 }
 
-pixel *get_unique(pixel *pixels, unsigned int pxLen, unsigned int *len) {
-  pixel *unique = malloc(sizeof(pixel));
+void get_unique(Compressed *c, pixel *pixels, unsigned int pxLen) {
+  c->palette = malloc(sizeof(pixel));
   unsigned int uniqLen = 0;
 
   for (int i = 0;i < pxLen;i++) {
     int duplicate = 0;
     for (int j = 0;j < uniqLen;j++) {
-      if (cequal(pixels[i], unique[j])) {
+      if (cequal(pixels[i], c->palette[j])) {
         duplicate = 1;
         break;
       }
@@ -57,22 +63,20 @@ pixel *get_unique(pixel *pixels, unsigned int pxLen, unsigned int *len) {
 
     if (!duplicate) {
       if (uniqLen > 0) {
-        unique = realloc(unique, sizeof(pixel) * (uniqLen + 1));
+        c->palette = realloc(c->palette, sizeof(pixel) * (uniqLen + 1));
       }
 
-      unique[uniqLen] = pixels[i];
+      c->palette[uniqLen] = pixels[i];
       uniqLen++;
     }
   }
 
-  *len = uniqLen;
-
-  return unique;
+  c->paletteLen = uniqLen;
 }
 
-int get_color_index(pixel *palette, unsigned int paletteLen, pixel p) {
-  for (int i = 0;i < paletteLen;i++) {
-    if (cequal(p, palette[i])) {
+int get_color_index(Compressed *c, pixel p) {
+  for (int i = 0;i < c->paletteLen;i++) {
+    if (cequal(p, c->palette[i])) {
       return i;
     }
   }
@@ -80,12 +84,12 @@ int get_color_index(pixel *palette, unsigned int paletteLen, pixel p) {
   return 0;
 }
 
-int *index_pixels(pixel *pixels, unsigned int pxLen, pixel *palette, unsigned int paletteLen) {
+void index_pixels(Compressed *c, pixel *pixels, unsigned int pxLen) {
   int *indexedBmp = malloc(sizeof(int) * pxLen);
 
   for (int p = 0;p < pxLen;p++) {
-    indexedBmp[p] = get_color_index(palette, paletteLen, pixels[p]);
+    indexedBmp[p] = get_color_index(c, pixels[p]);
   }
 
-  return indexedBmp;
+  c->indices = indexedBmp;
 }

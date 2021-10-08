@@ -1,11 +1,17 @@
 #include "../lib/cbmp.h"
 
-pixel *load_pixels(char *path, unsigned int *w, unsigned int *h);
+typedef struct compressed {
+  pixel* palette;
+  int *indices;
+  unsigned int width, height, paletteLen;
+} Compressed;
+
+void close_compressed(Compressed *c);
+
+pixel *load_pixels(Compressed *c, char *path);
 
 int cequal(pixel p1, pixel p2);
 
-pixel *get_unique(pixel *pixels, unsigned int pxLen, unsigned int *len);
+void get_unique(Compressed *c, pixel *pixels, unsigned int pxLen);
 
-int get_color_index(pixel *palette, unsigned int paletteLen, pixel p);
-
-int *index_pixels(pixel *pixels, unsigned int pxLen, pixel *palette, unsigned int paletteLen);
+void index_pixels(Compressed *c, pixel *pixels, unsigned int pxLen);
