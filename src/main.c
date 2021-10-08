@@ -20,7 +20,9 @@ void compress_routine(char *path) {
 }
 
 void decompress_routine(char *path) {
-  printf("Decompress\n");
+  Compressed *c = open_idx(path);
+
+  close_compressed(c);
 }
 
 int main(int argc, char **argv) {
