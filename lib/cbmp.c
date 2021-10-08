@@ -83,6 +83,7 @@ BMP* bopen(char* file_path)
 BMP* bcreate(unsigned int width, unsigned int height, pixel* pixels)
 {
   BMP* bmp = (BMP*) malloc(sizeof(BMP));
+
   bmp->width = width;
   bmp->height = height;
 
