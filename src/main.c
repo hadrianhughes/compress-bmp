@@ -3,7 +3,7 @@
 #include "../lib/cbmp.h"
 #include "files.h"
 
-Color *load_pixels(char *path, unsigned int *w, unsigned int* h) {
+pixel *load_pixels(char *path, unsigned int *w, unsigned int* h) {
   BMP *bmp = bopen(path);
 
   unsigned int width = get_width(bmp);
@@ -11,7 +11,7 @@ Color *load_pixels(char *path, unsigned int *w, unsigned int* h) {
   *w = width;
   *h = height;
 
-  Color pixels[width * height];
+  pixel pixels[width * height];
   unsigned int pxHead = 0;
 
   for (int x = 0;x < width;x++) {
@@ -19,10 +19,10 @@ Color *load_pixels(char *path, unsigned int *w, unsigned int* h) {
       unsigned char r, g, b;
       get_pixel_rgb(bmp, x, y, &r, &g, &b);
 
-      Color p;
-      p.r = r;
-      p.g = g;
-      p.b = b;
+      pixel p;
+      p.red = r;
+      p.green = g;
+      p.blue = b;
 
       pixels[pxHead] = p;
       pxHead++;
@@ -31,7 +31,7 @@ Color *load_pixels(char *path, unsigned int *w, unsigned int* h) {
 
   bclose(bmp);
 
-  Color *p = pixels;
+  pixel *p = pixels;
   return p;
 }
 
@@ -46,12 +46,12 @@ int main(int argc, char **argv) {
   unsigned int w, h;
   unsigned int *width = &w;
   unsigned int *height = &h;
-  Color *pixels = load_pixels(path, width, height);
-  unsigned int pixelLen = *width * *height;
+  pixel *pixels = load_pixels(path, width, height);
+  unsigned int pixelLen = (*width) * (*height);
 
   unsigned int pl;
   unsigned int *paletteLen = &pl;
-  Color *palette = get_unique(pixels, pixelLen, paletteLen);
+  pixel *palette = get_unique(pixels, pixelLen, paletteLen);
 
   int *indices = index_pixels(pixels, pixelLen, palette, *paletteLen);
 

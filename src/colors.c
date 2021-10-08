@@ -2,16 +2,16 @@
 #include <stdlib.h>
 #include "colors.h"
 
-int cequal(Color col1, Color col2) {
-  if (col1.r == col2.r && col1.g == col2.g && col1.b == col2.b) {
+int cequal(pixel p1, pixel p2) {
+  if (p1.red == p2.red && p1.green == p2.green && p1.blue == p2.blue && p1.alpha && p2.alpha) {
     return 1;
   }
 
   return 0;
 }
 
-Color *get_unique(Color *pixels, unsigned int pxLen, unsigned int *len) {
-  Color *unique = malloc(sizeof(Color));
+pixel *get_unique(pixel *pixels, unsigned int pxLen, unsigned int *len) {
+  pixel *unique = malloc(sizeof(pixel));
   unsigned int uniqLen = 0;
 
   for (int i = 0;i < pxLen;i++) {
@@ -25,7 +25,7 @@ Color *get_unique(Color *pixels, unsigned int pxLen, unsigned int *len) {
 
     if (!duplicate) {
       if (uniqLen > 0) {
-        unique = realloc(unique, sizeof(Color) * (uniqLen + 1));
+        unique = realloc(unique, sizeof(pixel) * (uniqLen + 1));
       }
 
       unique[uniqLen] = pixels[i];
@@ -38,9 +38,9 @@ Color *get_unique(Color *pixels, unsigned int pxLen, unsigned int *len) {
   return unique;
 }
 
-int get_color_index(Color *palette, unsigned int paletteLen, Color c) {
+int get_color_index(pixel *palette, unsigned int paletteLen, pixel p) {
   for (int i = 0;i < paletteLen;i++) {
-    if (cequal(c, palette[i])) {
+    if (cequal(p, palette[i])) {
       return i;
     }
   }
@@ -48,7 +48,7 @@ int get_color_index(Color *palette, unsigned int paletteLen, Color c) {
   return 0;
 }
 
-int *index_pixels(Color *pixels, unsigned int pxLen, Color *palette, unsigned int paletteLen) {
+int *index_pixels(pixel *pixels, unsigned int pxLen, pixel *palette, unsigned int paletteLen) {
   int *indexedBmp = malloc(sizeof(int) * pxLen);
 
   for (int p = 0;p < pxLen;p++) {

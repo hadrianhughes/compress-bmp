@@ -3,14 +3,14 @@
 #include "utils.h"
 #include "files.h"
 
-void write_indexed_file(int *indices, unsigned int width, unsigned int height, Color *palette, unsigned int paletteLen, char *filePath) {
+void write_indexed_file(int *indices, unsigned int width, unsigned int height, pixel *palette, unsigned int paletteLen, char *filePath) {
   char *inputFileName = get_file_name(filePath);
   char *newFileName = strcat(inputFileName, ".idx");
 
   FILE *fp = fopen(newFileName, "w");
 
   for (int c = 0;c < paletteLen;c++) {
-    fprintf(fp, "%d %d %d %d\n", c, palette[c].r, palette[c].g, palette[c].b);
+    fprintf(fp, "%d %d %d %d\n", c, palette[c].red, palette[c].green, palette[c].blue);
   }
 
   putc('\n', fp);

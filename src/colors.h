@@ -1,11 +1,9 @@
-typedef struct Color {
-  unsigned char r, g, b;
-} Color;
+#include "../lib/cbmp.h"
 
-int cequal(Color col1, Color col2);
+int cequal(pixel p1, pixel p2);
 
-Color *get_unique(Color *pixels, unsigned int pxLen, unsigned int *len);
+pixel *get_unique(pixel *pixels, unsigned int pxLen, unsigned int *len);
 
-int get_color_index(Color *palette, unsigned int paletteLen, Color c);
+int get_color_index(pixel *palette, unsigned int paletteLen, pixel p);
 
-int *index_pixels(Color *pixels, unsigned int pxLen, Color *palette, unsigned int paletteLen);
+int *index_pixels(pixel *pixels, unsigned int pxLen, pixel *palette, unsigned int paletteLen);
