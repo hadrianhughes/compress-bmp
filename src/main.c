@@ -6,9 +6,8 @@
 #include "colors.h"
 
 void compress_routine(char *path) {
-  unsigned int w, h;
-  unsigned int *width = &w;
-  unsigned int *height = &h;
+  unsigned int *width = malloc(sizeof(unsigned int));
+  unsigned int *height = malloc(sizeof(unsigned int));
   pixel *pixels = load_pixels(path, width, height);
   unsigned int pixelLen = (*width) * (*height);
 
@@ -20,6 +19,8 @@ void compress_routine(char *path) {
 
   write_indexed_file(indices, *width, *height, palette, *paletteLen, path);
 
+  free(width);
+  free(height);
   free(palette);
   free(indices);
 }
