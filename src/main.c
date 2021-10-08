@@ -3,7 +3,7 @@
 #include "../lib/cbmp.h"
 #include "files.h"
 
-pixel *load_pixels(char *path, unsigned int *w, unsigned int* h) {
+pixel *load_pixels(char *path, unsigned int *w, unsigned int *h) {
   BMP *bmp = bopen(path);
 
   unsigned int width = get_width(bmp);
