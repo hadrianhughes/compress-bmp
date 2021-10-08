@@ -41,7 +41,7 @@ pixel *load_pixels(Compressed *c, char *path) {
 }
 
 int cequal(pixel p1, pixel p2) {
-  if (p1.red == p2.red && p1.green == p2.green && p1.blue == p2.blue && p1.alpha && p2.alpha) {
+  if (p1.red == p2.red && p1.green == p2.green && p1.blue == p2.blue) {
     return 1;
   }
 
@@ -49,28 +49,26 @@ int cequal(pixel p1, pixel p2) {
 }
 
 void get_unique(Compressed *c, pixel *pixels, unsigned int pxLen) {
-  c->palette = malloc(sizeof(pixel));
+  pixel* unique = malloc(0);
   unsigned int uniqLen = 0;
 
   for (int i = 0;i < pxLen;i++) {
     int duplicate = 0;
     for (int j = 0;j < uniqLen;j++) {
-      if (cequal(pixels[i], c->palette[j])) {
+      if (cequal(pixels[i], unique[j])) {
         duplicate = 1;
         break;
       }
     }
 
     if (!duplicate) {
-      if (uniqLen > 0) {
-        c->palette = realloc(c->palette, sizeof(pixel) * (uniqLen + 1));
-      }
-
-      c->palette[uniqLen] = pixels[i];
       uniqLen++;
+      unique = realloc(unique, sizeof(pixel) * uniqLen);
+      unique[uniqLen - 1] = pixels[i];
     }
   }
 
+  c->palette = unique;
   c->paletteLen = uniqLen;
 }
 
