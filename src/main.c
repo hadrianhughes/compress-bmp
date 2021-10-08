@@ -37,7 +37,7 @@ pixel *load_pixels(char *path, unsigned int *w, unsigned int* h) {
 
 int main(int argc, char **argv) {
   if (argc < 2) {
-    printf("Usage: idxbmp <path>\n");
+    printf("Usage: %s <input_file>\n", argv[0]);
     return 1;
   }
 
