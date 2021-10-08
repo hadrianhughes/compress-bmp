@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "../lib/cbmp.h"
 #include "files.h"
 
@@ -35,14 +36,7 @@ pixel *load_pixels(char *path, unsigned int *w, unsigned int *h) {
   return p;
 }
 
-int main(int argc, char **argv) {
-  if (argc < 2) {
-    printf("Usage: %s <input_file>\n", argv[0]);
-    return 1;
-  }
-
-  char *path = argv[1];
-
+void compress_routine(char *path) {
   unsigned int w, h;
   unsigned int *width = &w;
   unsigned int *height = &h;
@@ -59,6 +53,22 @@ int main(int argc, char **argv) {
 
   free(palette);
   free(indices);
+}
+
+int main(int argc, char **argv) {
+  if (argc < 3) {
+    printf("%s: Usage: %s <subcommand> <input_file>\n", argv[0], argv[0]);
+    return 1;
+  }
+
+  char *subcommand = argv[1];
+  char *path = argv[2];
+
+  if (strcmp(subcommand, "compress") == 0) {
+    compress_routine(path);
+  } else {
+    printf("%s: Subcommand '%s' not recognised.\n", argv[0], argv[1]);
+  }
 
   return 0;
 }
