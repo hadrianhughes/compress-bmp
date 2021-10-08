@@ -20,6 +20,7 @@ void compress_routine(char *path) {
 }
 
 void decompress_routine(char *path) {
+  printf("Decompress\n");
 }
 
 int main(int argc, char **argv) {
@@ -33,6 +34,8 @@ int main(int argc, char **argv) {
 
   if (strcmp(subcommand, "compress") == 0) {
     compress_routine(path);
+  } else if (strcmp(subcommand, "decompress") == 0) {
+    decompress_routine(path);
   } else {
     printf("%s: Subcommand '%s' not recognised.\n", argv[0], argv[1]);
   }
