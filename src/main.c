@@ -7,7 +7,7 @@
 void compress_routine(char *path) {
   Compressed *c = (Compressed*) malloc(sizeof(Compressed));
 
-  pixel *pixels = load_pixels(c, path);
+  pixel **pixels = load_pixels(c, path);
   unsigned int pixelLen = (c->width) * (c->height);
 
   get_unique(c, pixels, pixelLen);

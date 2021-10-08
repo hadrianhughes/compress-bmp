@@ -8,7 +8,7 @@ void close_compressed(Compressed *c) {
   free(c);
 }
 
-pixel *load_pixels(Compressed *c, char *path) {
+pixel **load_pixels(Compressed *c, char *path) {
   BMP *bmp = bopen(path);
 
   unsigned int width = get_width(bmp);
@@ -16,7 +16,7 @@ pixel *load_pixels(Compressed *c, char *path) {
   c->width = width;
   c->height = height;
 
-  pixel pixels[width * height];
+  pixel **pixels = malloc(sizeof(pixel*) * width * height);
   unsigned int pxHead = 0;
 
   for (int x = 0;x < width;x++) {
@@ -24,10 +24,11 @@ pixel *load_pixels(Compressed *c, char *path) {
       unsigned char r, g, b;
       get_pixel_rgb(bmp, x, y, &r, &g, &b);
 
-      pixel p;
-      p.red = r;
-      p.green = g;
-      p.blue = b;
+      pixel *p = malloc(sizeof(pixel));
+      p->red = r;
+      p->green = g;
+      p->blue = b;
+      p->alpha = 1;
 
       pixels[pxHead] = p;
       pxHead++;
@@ -36,20 +37,19 @@ pixel *load_pixels(Compressed *c, char *path) {
 
   bclose(bmp);
 
-  pixel *p = pixels;
-  return p;
+  return pixels;
 }
 
-int cequal(pixel p1, pixel p2) {
-  if (p1.red == p2.red && p1.green == p2.green && p1.blue == p2.blue) {
+int cequal(pixel *p1, pixel *p2) {
+  if (p1->red == p2->red && p1->green == p2->green && p1->blue == p2->blue) {
     return 1;
   }
 
   return 0;
 }
 
-void get_unique(Compressed *c, pixel *pixels, unsigned int pxLen) {
-  pixel* unique = malloc(0);
+void get_unique(Compressed *c, pixel **pixels, unsigned int pxLen) {
+  pixel **unique = malloc(0);
   unsigned int uniqLen = 0;
 
   for (int i = 0;i < pxLen;i++) {
@@ -63,7 +63,7 @@ void get_unique(Compressed *c, pixel *pixels, unsigned int pxLen) {
 
     if (!duplicate) {
       uniqLen++;
-      unique = realloc(unique, sizeof(pixel) * uniqLen);
+      unique = realloc(unique, sizeof(pixel*) * uniqLen);
       unique[uniqLen - 1] = pixels[i];
     }
   }
@@ -72,7 +72,7 @@ void get_unique(Compressed *c, pixel *pixels, unsigned int pxLen) {
   c->paletteLen = uniqLen;
 }
 
-int get_color_index(Compressed *c, pixel p) {
+int get_color_index(Compressed *c, pixel *p) {
   for (int i = 0;i < c->paletteLen;i++) {
     if (cequal(p, c->palette[i])) {
       return i;
@@ -82,7 +82,7 @@ int get_color_index(Compressed *c, pixel p) {
   return 0;
 }
 
-void index_pixels(Compressed *c, pixel *pixels, unsigned int pxLen) {
+void index_pixels(Compressed *c, pixel **pixels, unsigned int pxLen) {
   int *indexedBmp = malloc(sizeof(int) * pxLen);
 
   for (int p = 0;p < pxLen;p++) {
