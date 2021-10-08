@@ -39,6 +39,7 @@ typedef struct BMP_data
 
 BMP* bopen(char* file_path);
 BMP* b_deep_copy(BMP* to_copy);
+BMP* bcreate(unsigned int width, unsigned int height, pixel **pixels);
 int get_width(BMP* bmp);
 int get_height(BMP* bmp);
 unsigned int get_depth(BMP* bmp);

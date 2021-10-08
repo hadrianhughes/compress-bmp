@@ -75,6 +75,8 @@ Compressed *open_idx(char *filePath) {
     }
   }
 
+  fclose(fp);
+
   imageHeight = pixelCount / imageWidth;
 
   // Build Compressed struct

@@ -80,7 +80,7 @@ BMP* bopen(char* file_path)
     return bmp;
 }
 
-BMP* bcreate(unsigned int width, unsigned int height, pixel* pixels)
+BMP* bcreate(unsigned int width, unsigned int height, pixel **pixels)
 {
   BMP* bmp = (BMP*) malloc(sizeof(BMP));
 
@@ -91,7 +91,7 @@ BMP* bcreate(unsigned int width, unsigned int height, pixel* pixels)
   bmp->file_byte_contents = (unsigned char*) malloc(bmp->file_byte_number * sizeof(char));
   bmp->pixel_array_start = 0;
 
-  bmp->pixels = pixels;
+  bmp->pixels = *pixels;
 
   return bmp;
 }

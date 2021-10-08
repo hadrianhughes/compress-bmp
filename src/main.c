@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../lib/cbmp.h"
 #include "files.h"
+#include "utils.h"
 
 void compress_routine(char *path) {
   Compressed *c = (Compressed*) malloc(sizeof(Compressed));
@@ -21,6 +22,11 @@ void compress_routine(char *path) {
 
 void decompress_routine(char *path) {
   Compressed *c = open_idx(path);
+  BMP* bmp = decompress_to_bmp(c);
+  char *fileName = strcat(get_file_name(path), ".bmp");
+
+  printf("%s", fileName);
+  bwrite(bmp, fileName);
 
   close_compressed(c);
 }

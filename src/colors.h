@@ -15,3 +15,5 @@ int cequal(pixel *p1, pixel *p2);
 void get_unique(Compressed *c, pixel **pixels, unsigned int pxLen);
 
 void index_pixels(Compressed *c, pixel **pixels, unsigned int pxLen);
+
+BMP *decompress_to_bmp(Compressed *c);

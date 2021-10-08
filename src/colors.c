@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "colors.h"
+#include "../lib/cbmp.h"
 
 void close_compressed(Compressed *c) {
   free(c->palette);
@@ -90,4 +91,17 @@ void index_pixels(Compressed *c, pixel **pixels, unsigned int pxLen) {
   }
 
   c->indices = indexedBmp;
+}
+
+BMP *decompress_to_bmp(Compressed *c) {
+  pixel **pixels = malloc(sizeof(pixel*) * c->width * c->height);
+  for (int y = 0;y < c->height;y++) {
+    for (int x = 0;x < c->width;x++) {
+      int pos = c->height * y + x;
+      pixels[pos] = c->palette[c->indices[pos]];
+    }
+  }
+
+  BMP *bmp = bcreate(c->width, c->height, pixels);
+  return bmp;
 }
