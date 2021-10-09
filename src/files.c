@@ -37,15 +37,22 @@ Compressed *open_idx(char *filePath) {
   // Load palette
   pixel **palette = malloc(0);
   unsigned int paletteLen = 0;
-  int i, r, g, b;
-  while (fscanf(fp, "%d %d %d %d\n", &i, &r, &g, &b) == 4) {
+  char line[10000];
+  while (strcmp(fgets(line, 10000, fp), "\n")) {
     paletteLen++;
     palette = realloc(palette, sizeof(pixel*) * paletteLen);
 
+    int components[3];
+    char *partStr = strtok(line, " ");
+    for (int p = 0;p < 3;p++) {
+      partStr = strtok(NULL, " ");
+      components[p] = atoi(partStr);
+    }
+
     pixel* color = malloc(sizeof(pixel));
-    color->red = r;
-    color->green = g;
-    color->blue = b;
+    color->red = components[0];
+    color->green = components[1];
+    color->blue = components[2];
     color->alpha = 1;
 
     palette[paletteLen - 1] = color;
@@ -55,7 +62,6 @@ Compressed *open_idx(char *filePath) {
   int *indices = malloc(0);
   unsigned int pixelCount = 0;
   unsigned int imageWidth, imageHeight;
-  char line[10000];
   int firstIter = 1;
   while (fgets(line, 10000, fp) != NULL) {
     char *pixelString = strtok(line, " ");

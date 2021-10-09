@@ -25,7 +25,6 @@ void decompress_routine(char *path) {
   BMP* bmp = decompress_to_bmp(c);
   char *fileName = strcat(get_file_name(path), ".bmp");
 
-  printf("%s", fileName);
   bwrite(bmp, fileName);
 
   close_compressed(c);

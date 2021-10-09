@@ -86,6 +86,7 @@ BMP* bcreate(unsigned int width, unsigned int height, pixel **pixels)
 
   bmp->width = width;
   bmp->height = height;
+  bmp->depth = 32;
 
   bmp->file_byte_number = width * height * sizeof(pixel);
   bmp->file_byte_contents = (unsigned char*) malloc(bmp->file_byte_number * sizeof(char));
